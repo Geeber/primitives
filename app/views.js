@@ -40,18 +40,70 @@ var MapObjectView = View.extend({
     }
 });
 
+
+
+var ResetView = View.extend({
+    events: {
+        click: "reset"
+    },
+
+    initialize: function() {
+        this.render();
+    }, 
+
+    render: function() {
+        $("#main").append(this.$el);
+        this.$el.text("RESET");
+    },
+
+    reset: function() {
+        this.model.resetMap();
+    }
+});
+
+var RunView = View.extend({
+    events: {
+        click: "run"
+    },
+
+    initialize: function() {
+        this.render();
+    }, 
+
+    render: function() {
+        $("#main").append(this.$el);
+        this.$el.text("RUN");
+    },
+
+    run: function() {
+        this.model.runPlan();
+    }
+});
+
+var PlanView = View.extend({
+    initialize: function() {
+        this.render();
+    }, 
+
+    render: function() {
+        $("#main").append(this.$el);
+    }
+});
+
 var MapView = View.extend({
     defaults: {
     },
 
     initialize: function() {
         this.render();
+        $("#main").append(this.$el);
+        this.listenTo(this.model, "reset", this.render);
     },
 
     render: function() {
         console.log("mapView is rendering!");
-        $("#main").html("");
-        $("#main").append(this.$el);
+
+        this.$el.html("");
 
         var table = $("<table></table>").addClass("gameTable");
         for(i=0; i < 11; i++) {

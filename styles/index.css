@@ -1,6 +1,10 @@
 /*hello styles*/
 
 
+table.gameTable {
+    float:left;
+}
+
 table.gameTable td {
     border: 1px solid black;
     width: 40px;
@@ -19,4 +23,15 @@ table.gameTable td.Player {
 
 table.gameTable td.Goal {
     background-color: green;
+}
+
+
+textarea#plan {
+    float: left;
+    height: 20em;
+    font-size: 20pt;
+}
+
+button#run {
+    font-size: 30pt;
 }

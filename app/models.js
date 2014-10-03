@@ -11,8 +11,46 @@ var Game = Model.extend({
     constructor: function() {
         // call super
         Model.apply( this, arguments );
-
     },
+
+    runPlan: function() {
+        console.log("RUNNING PLAN");
+
+        var planView = this.get("planView");
+        var text = planView.$el.val();
+
+        console.log(text);
+
+        var plan = text.split("\n");
+
+
+        function step(remainingPlan, game) {
+            if (remainingPlan.length == 0) {
+                return;
+            }
+
+            command = remainingPlan[0];
+
+            if(command == "up") {
+                game.get("mapState").get("player").moveUp();
+            }
+            else if(command == "down") {
+                game.get("mapState").get("player").moveDown();
+            }
+            else if(command == "left") {
+                game.get("mapState").get("player").moveLeft();
+            }
+            else if(command == "right") {
+                game.get("mapState").get("player").moveRight();
+            }
+
+            setTimeout(function() {
+                step(remainingPlan.slice(1), game);
+            }, 500);
+        }
+
+        step(plan, this);
+    }
 });
 
 // This represents the starting conditions / level design for a given level.
@@ -34,6 +72,12 @@ var MapState = Model.extend({
         Model.apply( this, arguments );
     },
 
+    resetMap: function() {
+        this.set("objects", []);
+        this.trigger("reset");
+        this.loadLevel(level1);
+    },
+
     loadLevel: function(levelDesign) {
         this.set("levelDesign", levelDesign);
 
@@ -47,11 +91,13 @@ var MapState = Model.extend({
             "Player",
             levelDesign.get("playerStartLocation"));
         this.addMapObject(playerObject);
+        this.set("player", playerObject);
 
         var goalObject = MapObject.build(
             "Goal",
             levelDesign.get("goalStartLocation"));
         this.addMapObject(goalObject);
+        this.set("goal", goalObject);
 
     },
 

@@ -32,6 +32,10 @@ textarea#plan {
     font-size: 20pt;
 }
 
+button#reset {
+    font-size: 30pt;
+}
+
 button#run {
     font-size: 30pt;
 }

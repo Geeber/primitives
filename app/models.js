@@ -24,7 +24,31 @@ var Game = Model.extend({
         var plan = text.split("\n");
 
 
-        function step(remainingPlan, game) {
+        var preparedPlan = [];
+        _.each(plan, function(step) {
+
+            if (step == "detour") {
+                preparedPlan.push("right");
+                preparedPlan.push("up");
+                preparedPlan.push("up");
+                preparedPlan.push("left");
+                return;
+            }
+
+            var shit = step.split(" ");
+
+            if (shit.length == 1) {
+                preparedPlan.push(shit[0]);
+            }
+            else {
+                var count = parseInt(shit[1]);
+                for(var i = 0; i < count; i++) {
+                    preparedPlan.push(shit[0]);
+                }
+            }
+        }, this);
+
+        function nextStep(remainingPlan, game) {
             if (remainingPlan.length == 0) {
                 return;
             }
@@ -45,11 +69,11 @@ var Game = Model.extend({
             }
 
             setTimeout(function() {
-                step(remainingPlan.slice(1), game);
+                nextStep(remainingPlan.slice(1), game);
             }, 500);
         }
 
-        step(plan, this);
+        nextStep(preparedPlan, this);
     }
 });
 
@@ -75,7 +99,7 @@ var MapState = Model.extend({
     resetMap: function() {
         this.set("objects", []);
         this.trigger("reset");
-        this.loadLevel(level1);
+        this.loadLevel(myLevel);
     },
 
     loadLevel: function(levelDesign) {

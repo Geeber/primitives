@@ -1,12 +1,14 @@
 // create the game singleton
 var game = new Game();
 
+var myLevel = level2;
+
 var mapState = new MapState();
 var mapView = new MapView({
     id: "map",
     model: mapState
 });
-mapState.loadLevel(level1);
+mapState.loadLevel(myLevel);
 
 
 

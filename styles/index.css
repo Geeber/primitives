@@ -6,3 +6,17 @@ table.gameTable td {
     width: 40px;
     height: 40px;
 }
+
+table.gameTable td.Tower {
+    background-color: red;
+}
+
+
+table.gameTable td.Player {
+    background-color: blue;
+}
+
+
+table.gameTable td.Goal {
+    background-color: green;
+}

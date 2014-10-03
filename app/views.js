@@ -1,13 +1,42 @@
 var View = Backbone.View.extend();
 
-
 var MapObjectView = View.extend({
-    initialize: function() {
-        this.listenTo(this.model, "change", this.render);
+
+    defaults:  {
+        lastKnownPosition: false,
+    },
+
+    constructor: function( options ) {
+        // call super
+        View.apply( this, arguments );
+
+        // force the first render
+        this.render();
+
+        // set up future renders
+        this.listenTo(this.model, "change:position", this.render);
     },
 
     render: function() {
+        console.log("rendering a MapObjectView");
 
+        var newPosition = this.model.get("position");
+
+        var lastKnownPosition = this.model.get("lastKnownPosition");
+        if(lastKnownPosition) {
+            var cellId = "#" + lastKnownPosition[0] + "-" + lastKnownPosition[1];
+            var cell = $(cellId);
+
+            cell.removeClass("Player");
+            cell.removeClass(this.model.get("type"));
+        }
+        
+
+        var cellId = "#" + newPosition[0] + "-" + newPosition[1];
+        var cell = $(cellId);
+        cell.addClass(this.model.get("type"));
+
+        this.model.set("lastKnownPosition", newPosition);
     }
 });
 
@@ -29,7 +58,7 @@ var MapView = View.extend({
             var row = $("<tr></tr>");
             for(j=0; j < 11; j++) {
                 var iCoord = 10-i;
-                var td = $("<td id='" + iCoord +"," + j + "'></td>");
+                var td = $("<td id='" + j +"-" + iCoord + "'></td>");
                 row.append(td);
             }
             table.append(row);
@@ -39,3 +68,4 @@ var MapView = View.extend({
     },
 
 });
+
